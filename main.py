@@ -7,7 +7,7 @@ from activation_functions import *
 
 class Perceptron:
 
-    def __init__(self, bias, threshold, activation_function,weights, inputs=None):
+    def __init__(self, bias, threshold, activation_function, weights, inputs=None):
         # [random.random() for _ in range(len(self.inputs))]
         self.inputs = inputs
         self.weights = weights
@@ -50,21 +50,24 @@ class PerceptronNetwork:
                 l.update_inputs(inputs)
                 inputs = l.get_outputs()
 
-            print(inputs)
+        return inputs
 
 
-# print(network.feed_forward())
-# print(network.perceptron_layers)
-# print(Perceptron(bias=0, threshold=2, activation_function=binary_threshold))
+inputs = [0, 0]
 
-layer1 = PerceptronLayer([Perceptron(bias=0, threshold=-1.99, activation_function=binary_threshold,
-                                     weights=[-1, -1], inputs=[1, 1])])
 
-layer2 = PerceptronLayer(
-    [Perceptron(bias=0, threshold=-1.99, activation_function=binary_threshold, weights=[-1, -1]) for _ in range(2)])
+# we consider the first nand gate as part of the input
+input_perceptron = Perceptron(bias=0, threshold=-1.99, activation_function=binary_threshold,
+                              weights=[-1, -1], inputs=inputs).calculate_output()
 
-layer3 = PerceptronLayer([Perceptron(bias=0, threshold=-1.99, activation_function=binary_threshold, weights=[-1, -1])])
+layer1 = PerceptronLayer(
+    [Perceptron(bias=0, threshold=-1.99, activation_function=binary_threshold, weights=[-1, -1],
+                inputs=[inputs[0] + input_perceptron]),
+     Perceptron(bias=0, threshold=-1.99, activation_function=binary_threshold, weights=[-1, -1],
+                inputs=[inputs[1] + input_perceptron])])
 
-network = PerceptronNetwork([layer1, layer2, layer3])
+layer2 = PerceptronLayer([Perceptron(bias=0, threshold=-1.99, activation_function=binary_threshold, weights=[-1, -1])])
 
-print(network.feed_forward())
+xor_network = PerceptronNetwork([layer1, layer2])
+
+print(xor_network.feed_forward())
