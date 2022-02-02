@@ -1,9 +1,11 @@
+import random
+
 from activation_functions import *
+
 
 class Perceptron:
 
-    def __init__(self, bias, threshold, activation_function, weights, inputs=None):
-
+    def __init__(self, bias, threshold, activation_function, weights=None, inputs=None):
         self.inputs = inputs
         self.weights = weights
         self.bias = bias
@@ -19,6 +21,13 @@ class Perceptron:
         """
         return self.activation_function(sum([w * i for w, i in zip(self.weights, self.inputs)]) + self.bias,
                                         self.threshold)
+
+    def randomize_weights(self):
+        """
+        fill the weights with random numbers between 0 and 1
+        """
+
+        self.weights = [random.random() for _ in range(len(self.inputs))]
 
     def __str__(self):
         return f"{self.inputs=} | {self.weights=} | {self.bias=} | {self.threshold=} | {self.activation_function=}"
