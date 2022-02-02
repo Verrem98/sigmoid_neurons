@@ -40,7 +40,7 @@ class PerceptronLayer:
 
     def get_outputs(self):
         """
-        make a list of all the perceptron outputs of a specific PercentronLayer
+        make a list of all the perceptron outputs of a specific PerceptronLayer
 
         :return: a list of all the outputs of a PerceptronLayer
         """
