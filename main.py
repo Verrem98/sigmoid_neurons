@@ -82,7 +82,7 @@ def create_xor_network(inputs):
     """
     create a xor-network with two inputs
 
-    :param inputs: inputs
+    :param inputs: inputs (the input layer)
     :return: PerceptronNetwork
     """
 
@@ -102,6 +102,12 @@ def create_xor_network(inputs):
 
 
 def create_half_adder_network(inputs):
+    """
+       create a half-adder-network with two inputs
+
+       :param inputs: inputs (the input layer)
+       :return: PerceptronNetwork
+       """
     layer1 = PerceptronLayer(
         [Perceptron(bias=-2, activation_function=binary_threshold, weights=[1, 1],
                     inputs=inputs),
