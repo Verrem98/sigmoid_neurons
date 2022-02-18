@@ -97,6 +97,26 @@ class Test(unittest.TestCase):
             if c == (1, 1):
                 self.assertEqual(r, [1, 0], 'should be [1,0]')
 
+    def test_3_input_network(self):
+
+        inputs = [0, 1, 1]
+        layer1 = PerceptronLayer(
+            [
+            #-1 + (1*0) + (1*1) + (1*0) >= 0
+            Perceptron(bias=-1, activation_function=binary_threshold, weights=[1, 1, 0],
+                        inputs=inputs),
+
+             # -2 + (-1*0) + (-1*1) + (1 * 1) < 0
+             Perceptron(bias=-2, activation_function=binary_threshold, weights=[-1, -1, 1],
+                        inputs=inputs),
+
+             # 1 + (-1*0) + (1*1) + (1*1) > 0
+             Perceptron(bias=1, activation_function=binary_threshold, weights=[-1, 1, 1],
+                        inputs=inputs)])
+
+
+        self.assertEqual(PerceptronNetwork([layer1]).feed_forward(), [1,0,1], 'should be [1,0,1]')
+
 
 if __name__ == '__main__':
     unittest.main()
