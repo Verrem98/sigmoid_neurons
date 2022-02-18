@@ -5,12 +5,11 @@ from activation_functions import *
 
 class Perceptron:
 
-    def __init__(self, bias, threshold, activation_function, weights=None, inputs=None):
+    def __init__(self, bias, activation_function, weights=None, inputs=None):
         self.inputs = inputs
         self.weights = weights
         self.bias = bias
         self.activation_function = activation_function
-        self.threshold = threshold
 
     def calculate_output(self):
         """
@@ -19,8 +18,7 @@ class Perceptron:
 
         :return: the output of a specific perceptron
         """
-        return self.activation_function(sum([w * i for w, i in zip(self.weights, self.inputs)]) + self.bias,
-                                        self.threshold)
+        return self.activation_function(sum([w * i for w, i in zip(self.weights, self.inputs)]) + self.bias)
 
     def randomize_weights(self):
         """
@@ -87,44 +85,33 @@ def create_xor_network(inputs):
     :param inputs: inputs
     :return: PerceptronNetwork
     """
-    # we consider the first nand gate as part of the input
-    input_perceptron = Perceptron(bias=0, threshold=-1.99, activation_function=binary_threshold,
-                                  weights=[-1, -1], inputs=inputs).calculate_output()
+
 
     layer1 = PerceptronLayer(
-        [Perceptron(bias=0, threshold=-1.99, activation_function=binary_threshold, weights=[-1, -1],
-                    inputs=[inputs[0] + input_perceptron]),
-         Perceptron(bias=0, threshold=-1.99, activation_function=binary_threshold, weights=[-1, -1],
-                    inputs=[inputs[1] + input_perceptron])])
+        [Perceptron(bias=-1, activation_function=binary_threshold, weights=[1,1],
+                    inputs=inputs),
+         Perceptron(bias=1, activation_function=binary_threshold, weights=[-1, -1],
+                    inputs=inputs)])
 
     layer2 = PerceptronLayer(
-        [Perceptron(bias=0, threshold=-1.99, activation_function=binary_threshold, weights=[-1, -1])])
+        [Perceptron(bias=-2, activation_function=binary_threshold, weights=[1,1])])
 
     return PerceptronNetwork([layer1, layer2])
 
 
+
+
 def create_half_adder_network(inputs):
-    """
-        create a half-adder-network with two inputs
-
-        :param inputs: inputs
-        :return: PerceptronNetwork
-        """
-    # the only difference compared to the xor network is an additional AND-gate with the original inputs
-    # in layer2
-
-    # we consider the first nand gate as part of the input
-    input_perceptron = Perceptron(bias=0, threshold=-1.99, activation_function=binary_threshold,
-                                  weights=[-1, -1], inputs=inputs)
-
     layer1 = PerceptronLayer(
-        [Perceptron(bias=0, threshold=-1.99, activation_function=binary_threshold, weights=[-1, -1],
-                    inputs=[inputs[0] + input_perceptron.calculate_output()]),
-         Perceptron(bias=0, threshold=-1.99, activation_function=binary_threshold, weights=[-1, -1],
-                    inputs=[inputs[1] + input_perceptron.calculate_output()])])
+        [Perceptron(bias=-2, activation_function=binary_threshold, weights=[1, 1],
+                    inputs=inputs),
+         Perceptron(bias=-1, activation_function=binary_threshold, weights=[1, 1],
+                    inputs=inputs),
+         Perceptron(bias=1, activation_function=binary_threshold, weights=[-1, -1],
+                    inputs=inputs)])
 
     layer2 = PerceptronLayer(
-        [Perceptron(bias=0, threshold=-1.99, activation_function=binary_threshold, weights=[-1, -1]),
-         Perceptron(bias=0, threshold=2, activation_function=binary_threshold, weights=[1, 1], inputs=inputs)])
+        [Perceptron(bias=-1, activation_function=binary_threshold, weights=[1, 0, 0]),
+         Perceptron(bias=-2, activation_function=binary_threshold, weights=[0, 1, 1])])
 
     return PerceptronNetwork([layer1, layer2])
