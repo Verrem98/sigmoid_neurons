@@ -20,6 +20,11 @@ class Perceptron:
         """
         return self.activation_function(sum([w * i for w, i in zip(self.weights, self.inputs)]) + self.bias)
 
+
+    def predict(self,inputs):
+        self.inputs = inputs
+        return self.calculate_output()
+
     def randomize_weights(self):
         """
         fill the weights with random numbers between 0 and 1
@@ -102,14 +107,3 @@ class PerceptronNetwork:
         return inputs
 
 
-inputs = [1, 1]
-perc = Perceptron(bias=0, activation_function=binary_threshold, inputs=inputs)
-perc.randomize_weights()
-
-#perc.update(train_inputs=[[1, 1], [5, 5], [-1, 7], [2, 19], [-4, 3], [-23, 4], [-1, -1]], targets=[1, 1, 0, 1, 0, 0, 0],
-#            verbose=True)
-
-perc.update(train_inputs=[[1, 1], [1, 0], [0, 1], [0, 0]], targets=[1,0,0,0],
-           verbose=True)
-perc.inputs = [0, 1]
-print(perc.calculate_output())
