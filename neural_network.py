@@ -1,7 +1,5 @@
 import random
-
 from activation_functions import *
-
 
 class Perceptron:
 
@@ -20,8 +18,13 @@ class Perceptron:
         """
         return self.activation_function(sum([w * i for w, i in zip(self.weights, self.inputs)]) + self.bias)
 
+    def predict(self, inputs):
+        """
+        directly get a predict with a set of inputs
 
-    def predict(self,inputs):
+        :param inputs: inputs the model uses to make a prediction
+        :return: the prediction
+        """
         self.inputs = inputs
         return self.calculate_output()
 
@@ -33,6 +36,15 @@ class Perceptron:
         self.weights = [random.uniform(-0.01, 0.01) for _ in range(len(self.inputs))]
 
     def update(self, train_inputs, targets, lr=0.1, verbose=False):
+
+        """
+        updates the weights and bias of a perceptron based on a cost function
+
+        :param train_inputs: the inputs we train the perceptron on
+        :param targets: the targets the perceptron needs to predict
+        :param lr: the learning rate
+        :param verbose: print every step
+        """
 
         while True:
             errors = []
@@ -53,6 +65,12 @@ class Perceptron:
                 return
 
     def calculate_MSE(self, errors):
+        """
+        calculate the MSE of the training sets
+
+        :param errors: list that contains the errors for each training set (difference between predicted and wanted outcame)
+        :return: MSE
+        """
 
         return sum([error ** 2 for error in errors]) / len(errors)
 
@@ -105,5 +123,3 @@ class PerceptronNetwork:
                 inputs = l.get_outputs()
 
         return inputs
-
-
