@@ -1,6 +1,7 @@
 import random
 from activation_functions import *
 
+
 class Perceptron:
 
     def __init__(self, bias, activation_function, weights=None, inputs=None):
@@ -17,6 +18,9 @@ class Perceptron:
         :return: the output of a specific perceptron
         """
         return self.activation_function(sum([w * i for w, i in zip(self.weights, self.inputs)]) + self.bias)
+
+    def set_seed(self, seed):
+        random.seed(seed)
 
     def predict(self, inputs):
         """
