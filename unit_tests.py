@@ -1,5 +1,5 @@
 import unittest
-from main import *
+from neural_network import *
 from itertools import product
 
 
@@ -71,6 +71,24 @@ class Test(unittest.TestCase):
 
     def test_xor_network(self):
 
+        def create_xor_network(inputs):
+            """
+            create a xor-network with two inputs
+
+            :param inputs: inputs (the input layer)
+            :return: PerceptronNetwork
+            """
+            layer1 = PerceptronLayer(
+                [Perceptron(bias=-1, activation_function=binary_threshold, weights=[1, 1],
+                            inputs=inputs),
+                 Perceptron(bias=1, activation_function=binary_threshold, weights=[-1, -1],
+                            inputs=inputs)])
+
+            layer2 = PerceptronLayer(
+                [Perceptron(bias=-2, activation_function=binary_threshold, weights=[1, 1])])
+
+            return PerceptronNetwork([layer1, layer2])
+
         combs = list(product([0, 1], repeat=2))
         results = ([create_xor_network(i).feed_forward()[0] for i in combs])
         comb_results = list(zip(combs, results))
@@ -83,6 +101,27 @@ class Test(unittest.TestCase):
                 self.assertEqual(r, 1, 'should be 1')
 
     def test_half_adder_network(self):
+
+        def create_half_adder_network(inputs):
+            """
+               create a half-adder-network with two inputs
+
+               :param inputs: inputs (the input layer)
+               :return: PerceptronNetwork
+               """
+            layer1 = PerceptronLayer(
+                [Perceptron(bias=-2, activation_function=binary_threshold, weights=[1, 1],
+                            inputs=inputs),
+                 Perceptron(bias=-1, activation_function=binary_threshold, weights=[1, 1],
+                            inputs=inputs),
+                 Perceptron(bias=1, activation_function=binary_threshold, weights=[-1, -1],
+                            inputs=inputs)])
+
+            layer2 = PerceptronLayer(
+                [Perceptron(bias=-1, activation_function=binary_threshold, weights=[1, 0, 0]),
+                 Perceptron(bias=-2, activation_function=binary_threshold, weights=[0, 1, 1])])
+
+            return PerceptronNetwork([layer1, layer2])
 
         combs = list(product([0, 1], repeat=2))
         results = ([create_half_adder_network(i).feed_forward() for i in combs])
@@ -102,20 +141,19 @@ class Test(unittest.TestCase):
         inputs = [0, 1, 1]
         layer1 = PerceptronLayer(
             [
-            #-1 + (1*0) + (1*1) + (1*0) >= 0
-            Perceptron(bias=-1, activation_function=binary_threshold, weights=[1, 1, 0],
-                        inputs=inputs),
+                # -1 + (1*0) + (1*1) + (1*0) >= 0
+                Perceptron(bias=-1, activation_function=binary_threshold, weights=[1, 1, 0],
+                           inputs=inputs),
 
-             # -2 + (-1*0) + (-1*1) + (1 * 1) < 0
-             Perceptron(bias=-2, activation_function=binary_threshold, weights=[-1, -1, 1],
-                        inputs=inputs),
+                # -2 + (-1*0) + (-1*1) + (1 * 1) < 0
+                Perceptron(bias=-2, activation_function=binary_threshold, weights=[-1, -1, 1],
+                           inputs=inputs),
 
-             # 1 + (-1*0) + (1*1) + (1*1) > 0
-             Perceptron(bias=1, activation_function=binary_threshold, weights=[-1, 1, 1],
-                        inputs=inputs)])
+                # 1 + (-1*0) + (1*1) + (1*1) > 0
+                Perceptron(bias=1, activation_function=binary_threshold, weights=[-1, 1, 1],
+                           inputs=inputs)])
 
-
-        self.assertEqual(PerceptronNetwork([layer1]).feed_forward(), [1,0,1], 'should be [1,0,1]')
+        self.assertEqual(PerceptronNetwork([layer1]).feed_forward(), [1, 0, 1], 'should be [1,0,1]')
 
 
 if __name__ == '__main__':
