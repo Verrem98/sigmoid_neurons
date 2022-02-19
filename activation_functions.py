@@ -15,3 +15,7 @@ def relu(x):
 
 def binary_threshold(x):
     return 1 if x >= 0 else 0
+
+
+def dummy(x):
+    return x

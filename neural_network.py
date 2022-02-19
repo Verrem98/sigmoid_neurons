@@ -25,7 +25,31 @@ class Perceptron:
         fill the weights with random numbers between 0 and 1
         """
 
-        self.weights = [random.random() for _ in range(len(self.inputs))]
+        self.weights = [random.uniform(-0.01, 0.01) for _ in range(len(self.inputs))]
+
+    def update(self, train_inputs, targets, lr=0.1, verbose=False):
+
+        while True:
+            errors = []
+            for input, target in list(zip(train_inputs, targets)):
+                self.inputs = input
+
+                error = target - self.calculate_output()
+                weight_deltas = [lr * error * inp for inp in input]
+                bias_delta = lr * error
+                self.bias += bias_delta
+                self.weights = [sum(x) for x in list(zip(weight_deltas, self.weights))]
+                errors.append(error)
+
+                if verbose:
+                    print(
+                        f"{self.inputs=} | {error=} | {self.calculate_output()=} | {self.weights=} | {weight_deltas=} | {self.bias=}")
+            if self.calculate_MSE(errors) == 0:
+                return
+
+    def calculate_MSE(self, errors):
+
+        return sum([error ** 2 for error in errors]) / len(errors)
 
     def __str__(self):
         return f"{self.inputs=} | {self.weights=} | {self.bias=} | {self.threshold=} | {self.activation_function=}"
@@ -77,3 +101,15 @@ class PerceptronNetwork:
 
         return inputs
 
+
+inputs = [1, 1]
+perc = Perceptron(bias=0, activation_function=binary_threshold, inputs=inputs)
+perc.randomize_weights()
+
+#perc.update(train_inputs=[[1, 1], [5, 5], [-1, 7], [2, 19], [-4, 3], [-23, 4], [-1, -1]], targets=[1, 1, 0, 1, 0, 0, 0],
+#            verbose=True)
+
+perc.update(train_inputs=[[1, 1], [1, 0], [0, 1], [0, 0]], targets=[1,0,0,0],
+           verbose=True)
+perc.inputs = [0, 1]
+print(perc.calculate_output())
