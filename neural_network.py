@@ -4,11 +4,13 @@ from activation_functions import *
 
 class Perceptron:
 
-    def __init__(self, bias, activation_function, weights=None, inputs=None):
-        self.inputs = inputs
-        self.weights = weights
+    def __init__(self, bias, activation_function, nr_of_inputs):
+
+        self.nr_of_inputs = nr_of_inputs
         self.bias = bias
         self.activation_function = activation_function
+        self.inputs = None
+        self.weights = None
 
     def calculate_output(self):
         """
@@ -24,20 +26,20 @@ class Perceptron:
 
     def predict(self, inputs):
         """
-        directly get a predict with a set of inputs
+        get a prediction with a set of inputs
 
         :param inputs: inputs the model uses to make a prediction
         :return: the prediction
         """
         self.inputs = inputs
-        return self.calculate_output()
+        return self.activation_function(sum([w * i for w, i in zip(self.weights, self.inputs)]) + self.bias)
 
     def randomize_weights(self):
         """
         fill the weights with random numbers between 0 and 1
         """
 
-        self.weights = [random.uniform(-0.01, 0.01) for _ in range(len(self.inputs))]
+        self.weights = [random.uniform(-0.01, 0.01) for _ in range(self.nr_of_inputs)]
 
     def update(self, train_inputs, targets, lr=0.1, verbose=False):
 
