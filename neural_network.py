@@ -1,5 +1,4 @@
 import random
-from activation_functions import *
 
 
 class Perceptron:
@@ -32,6 +31,7 @@ class Perceptron:
         :return: the prediction
         """
         self.inputs = inputs
+
         return self.activation_function(sum([w * i for w, i in zip(self.weights, self.inputs)]) + self.bias)
 
     def randomize_weights(self):
@@ -129,3 +129,6 @@ class PerceptronNetwork:
                 inputs = l.get_outputs()
 
         return inputs
+
+
+

@@ -1,5 +1,6 @@
 import unittest
-from neural_network import *
+from neural_network import PerceptronNetwork, PerceptronLayer, Perceptron
+from activation_functions import binary_threshold, sigmoid
 from itertools import product
 import numpy as np
 
@@ -11,8 +12,7 @@ class Test(unittest.TestCase):
 
     def test_AND_learning(self):
 
-        # we need to give our perceptron inputs so that it knows how many random weights it has to generate,
-        # these do not matter
+        # we need to give our perceptron the number of inputs so that it knows how many random weights it has to generate
         perc = Perceptron(bias=0, activation_function=binary_threshold, nr_of_inputs=2)
         perc.randomize_weights()
 
@@ -37,8 +37,6 @@ class Test(unittest.TestCase):
         None
 
         # XOR gates are not linearly sepperable, this will not work
-
-
 
 
 if __name__ == '__main__':
