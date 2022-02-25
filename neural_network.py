@@ -1,7 +1,7 @@
 import random
 
 
-class Perceptron:
+class Neuron:
 
     def __init__(self, bias, activation_function, nr_of_inputs):
 
@@ -13,10 +13,10 @@ class Perceptron:
 
     def calculate_output(self):
         """
-        calculate the output of a perceptron by taking the sum of the product of every weight and input,
+        calculate the output of a Neuron by taking the sum of the product of every weight and input,
         adding the bias, and putting it into the activation function
 
-        :return: the output of a specific perceptron
+        :return: the output of a specific Neuron
         """
         return self.activation_function(sum([w * i for w, i in zip(self.weights, self.inputs)]) + self.bias)
 
@@ -44,10 +44,10 @@ class Perceptron:
     def update(self, train_inputs, targets, lr=0.1, verbose=False):
 
         """
-        updates the weights and bias of a perceptron based on a cost function
+        updates the weights and bias of a Neuron based on a cost function
 
-        :param train_inputs: the inputs we train the perceptron on
-        :param targets: the targets the perceptron needs to predict
+        :param train_inputs: the inputs we train the Neuron on
+        :param targets: the targets the Neuron needs to predict
         :param lr: the learning rate
         :param verbose: print every step
         """
@@ -81,38 +81,38 @@ class Perceptron:
         return sum([error ** 2 for error in errors]) / len(errors)
 
     def __str__(self):
-        return f"{self.inputs=} | {self.weights=} | {self.bias=} | {self.threshold=} | {self.activation_function=}"
+        return f"{self.inputs=} | {self.weights=} | {self.bias=} | {self.activation_function=}"
 
 
-class PerceptronLayer:
+class NeuronLayer:
 
-    def __init__(self, perceptrons):
-        self.perceptrons = perceptrons
+    def __init__(self, neurons):
+        self.neurons = neurons
 
     def get_outputs(self):
         """
-        make a list of all the perceptron outputs of a specific PerceptronLayer
+        make a list of all the Neuron outputs of a specific NeuronLayer
 
-        :return: a list of all the outputs of a PerceptronLayer
+        :return: a list of all the outputs of a NeuronLayer
         """
-        return [p.calculate_output() for p in self.perceptrons]
+        return [p.calculate_output() for p in self.neurons]
 
     def update_inputs(self, inputs):
         """
-        if the inputs of a perceptron in the layer haven't been set yet,
+        if the inputs of a Neuron in the layer haven't been set yet,
         set them as the outputs of the previous layer
 
         :param inputs: outputs from the previous layer
         """
-        for p in self.perceptrons:
+        for p in self.neurons:
             if p.inputs is None:
                 p.inputs = inputs
 
 
-class PerceptronNetwork:
+class NeuronNetwork:
 
-    def __init__(self, perceptron_layers):
-        self.perceptron_layers = perceptron_layers
+    def __init__(self, neuron_layers):
+        self.neuron_layers = neuron_layers
 
     def feed_forward(self):
         """
@@ -120,15 +120,18 @@ class PerceptronNetwork:
 
         :return: the network output
         """
+
         inputs = None
-        for count, l in enumerate(self.perceptron_layers):
+        for count, l in enumerate(self.neuron_layers):
             if count == 0:
                 inputs = l.get_outputs()
             else:
-                l.update_inputs(inputs)
-                inputs = l.get_outputs()
-
+                layer_input = inputs
+                for neuron in l.neurons:
+                    neuron.inputs = layer_input
+                    inputs = l.get_outputs()
         return inputs
 
-
-
+    def set_first_inputs(self, inputs):
+        for neuron in self.neuron_layers[0].neurons:
+            neuron.inputs = inputs
