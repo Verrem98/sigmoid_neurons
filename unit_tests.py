@@ -1,8 +1,7 @@
 import unittest
 from neural_network import NeuronNetwork, NeuronLayer, Neuron
-from activation_functions import binary_threshold, sigmoid, rounded_sigmoid
+from activation_functions import rounded_sigmoid
 from itertools import product
-import numpy as np
 
 
 class Test(unittest.TestCase):
@@ -15,7 +14,7 @@ class Test(unittest.TestCase):
         combs = list(product([0, 1], repeat=2))
 
         print(
-            "it looks like using perceptron parameters doesn't work for the sigmoid function for AND and OR\nbut it does seem to work for INVERT: ")
+            "it looks like perceptron parameters work for sigmoid neurons as well: ")
         print("AND(p1 parameters): ")
         for c in combs:
             neuron_AND = Neuron(bias=-2, activation_function=rounded_sigmoid, nr_of_inputs=2)

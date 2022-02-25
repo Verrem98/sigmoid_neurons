@@ -135,3 +135,12 @@ class NeuronNetwork:
     def set_first_inputs(self, inputs):
         for neuron in self.neuron_layers[0].neurons:
             neuron.inputs = inputs
+
+
+    def __str__(self):
+        s = ""
+
+        for count, nl in enumerate(self.neuron_layers):
+            s += f"neuron layer {count}: {len(nl.neurons)} neurons\n"
+
+        return s
