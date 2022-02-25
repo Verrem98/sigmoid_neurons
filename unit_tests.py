@@ -10,7 +10,7 @@ class Test(unittest.TestCase):
     ALL TEST CASES WERE BASED ON TRUTH TABLES FOUND ON WIKIPEDIA FOR THE RELEVANT LOGIC GATE
     """
 
-    def test_AND_OR_INVERT_SAME_INPUTS(self):
+    def test_AND_OR_INVERT_P1_INPUTS(self):
 
         combs = list(product([0, 1], repeat=2))
 
@@ -38,6 +38,7 @@ class Test(unittest.TestCase):
             neuron_INVERT.weights = [-1]
             neuron_INVERT.inputs = c
             print(c, neuron_INVERT.calculate_output())
+        print()
 
     def test_INVERT_neuron(self):
 
@@ -106,11 +107,6 @@ class Test(unittest.TestCase):
                 self.assertEqual(output, 0, "should be 0")
 
         print(f"'OR(trained)'{list(zip(combinations, outputs))}, weights: {perc.weights}, bias: {perc.bias}")
-
-    def test_XOR_learning(self):
-        None
-
-        # XOR gates are not linearly sepperable, this will not work
 
     def test_NAND_learning(self):
 
