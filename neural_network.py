@@ -36,7 +36,7 @@ class Neuron:
 
     def randomize_weights(self):
         """
-        fill the weights with random numbers between 0 and 1
+        fill the weights with random numbers between -0.01 and 0.01
         """
 
         self.weights = [random.uniform(-0.01, 0.01) for _ in range(self.nr_of_inputs)]
