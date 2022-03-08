@@ -32,7 +32,7 @@ class Neuron:
         """
         self.inputs = inputs
 
-        return self.activation_function(sum([w * i for w, i in zip(self.weights, self.inputs)]) + self.bias)
+        return self.calculate_output()
 
     def randomize_weights(self):
         """
